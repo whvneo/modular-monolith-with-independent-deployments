@@ -17,7 +17,7 @@ ENV LC_ALL=en_US.UTF-8
 RUN apt -y update \
     && apt -y upgrade
 
-RUN apt -y install locales htop curl wget vim-nox locales sudo git jq software-properties-common
+RUN apt -y install locales htop curl wget vim-nox locales sudo git jq software-properties-common inetutils-ping openssh-client
 
 COPY locale.gen /etc/
 RUN locale-gen
