@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.binaryigor</groupId>
+    <artifactId>modular-monolith-with-independent-deployments-spring-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Modular monolith with independent deployments spring-based parent</name>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.surefire.plugin.version>3.0.0</maven.surefire.plugin.version>
+
+        <spring.boot.version>3.1.5</spring.boot.version>
+        <spring.openapi.version>2.2.0</spring.openapi.version>
+        <postresql.driver.version>42.6.0</postresql.driver.version>
+        <testcontainers.version>1.17.6</testcontainers.version>
+
+        <internal.repo.id>internal.repo</internal.repo.id>
+        <internal.repo.name>Internal repo</internal.repo.name>
+        <internal.repo.url>http://nexus:8081/repository/maven-snapshots/</internal.repo.url>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${spring.openapi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postresql.driver.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${testcontainers.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <!--
+                    To avoid warnings with some reflection-related Spring issues that we don't control: https://github.com/spring-projects/spring-framework/issues/29612.
+                    Warnings are of the kind:
+                    2023-11-10T19:50:01.169Z  WARN 1 [ main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection
+                    -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <compilerArgs>
+                            <arg>-parameters</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>${internal.repo.id}</id>
+            <name>${internal.repo.name}</name>
+            <url>${internal.repo.url}</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <!--we want to always check for new snapshot packages to make independent development and deployments easier - no need to bump module version on each change -->
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>${internal.repo.id}</id>
+            <name>${internal.repo.name}</name>
+            <url>${internal.repo.url}</url>
+        </repository>
+    </distributionManagement>
+</project>

@@ -1,0 +1,6 @@
+FROM maven:3-eclipse-temurin-21-alpine
+
+COPY maven_settings.xml /usr/share/maven/ref/settings.xml
+COPY /application/ /build/
+
+WORKDIR /build/

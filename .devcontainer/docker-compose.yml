@@ -1,0 +1,58 @@
+services:
+
+  modulith: 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - GIT_EMAIL=${GIT_EMAIL}
+        - GIT_USERNAME=${GIT_USERNAME}
+    volumes:
+      - ..:/home/coder/workspace
+      - ~/.ssh:/home/coder/.ssh:ro
+    working_dir: /home/coder/workspace
+    hostname: modulith
+    networks:
+      - default
+    container_name: modulith
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+  nexus:
+    image: sonatype/nexus3:3.62.0
+    ports:
+      - "8081:8081"
+    volumes:
+      - nexus-data:/nexus-data
+    networks:
+      - default
+    hostname: nexus
+    container_name: nexus
+    
+  postgres:
+    image: postgres:15.3
+    ports:
+      - "5555:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: modulith
+    networks:
+      - default
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    hostname: postgres
+    container_name: postgres
+  
+    
+    
+networks:
+  default:
+    external: true
+    name: devcontainer
+
+volumes:
+  nexus-data:
+    driver: local
+  postgres-data:
+    driver: local

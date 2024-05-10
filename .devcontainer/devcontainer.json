@@ -1,0 +1,37 @@
+{
+  "name": "modulith",
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "modulith",
+  "remoteUser": "coder",
+  "shutdownAction": "stopCompose",
+  "workspaceFolder": "/home/coder/workspace",
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": [
+        "42crunch.vscode-openapi",
+        "anweber.vscode-httpyac",
+        "esbenp.prettier-vscode",
+        "github.copilot",
+        "github.copilot-chat",
+        "mhutchie.git-graph",
+        "ms-azuretools.vscode-docker",
+        "redhat.java",
+        "redhat.vscode-yaml",
+        "visualstudioexptteam.intellicode-api-usage-examples",
+        "visualstudioexptteam.vscodeintellicode",
+        "vmware.vscode-boot-dev-pack",
+        "vmware.vscode-spring-boot",
+        "vscjava.vscode-java-debug",
+        "vscjava.vscode-java-dependency",
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-java-test",
+        "vscjava.vscode-maven",
+        "vscjava.vscode-spring-boot-dashboard",
+        "vscjava.vscode-spring-initializr"
+      ]
+    }
+  },
+  "forwardPorts": [80],
+  "runArgs": "--network=devcontainer"
+}
