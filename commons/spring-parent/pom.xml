@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.surefire.plugin.version>3.0.0</maven.surefire.plugin.version>
 
-        <spring.boot.version>3.1.5</spring.boot.version>
+        <spring.boot.version>3.1.11</spring.boot.version>
         <spring.openapi.version>2.2.0</spring.openapi.version>
         <postresql.driver.version>42.6.0</postresql.driver.version>
         <testcontainers.version>1.17.6</testcontainers.version>

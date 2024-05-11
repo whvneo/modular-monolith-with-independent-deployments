@@ -1,4 +1,5 @@
 spring:
-  application: inventory
+  application: 
+    name: inventory
   profiles:
     active: inventory
